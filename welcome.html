@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>superSTRAK Photobooth</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body class="booth-page">
+<header class="top">
+  <h1 class="logo"><i class="u"><span>sup</span></i><span>er</span>STRAK</h1>
+</header>
+
+<main class="booth">
+  <aside class="panel">
+    <h3>Filter</h3>
+    <button class="chip active" data-filter="none">Normal</button>
+    <button class="chip" data-filter="grayscale(100%)">Hitam putih</button>
+    <button class="chip" data-filter="sepia(100%)">Sepia</button>
+    <button class="chip" data-filter="contrast(120%) saturate(80%)">Vintage</button>
+    <button class="chip" data-filter="brightness(110%) saturate(130%)">Cerah</button>
+    <button class="chip" data-filter="hue-rotate(-20deg) saturate(150%)">Hangat</button>
+  </aside>
+
+  <section class="stagecol">
+    <div class="cam">
+      <div class="frame">
+        <video id="video" autoplay playsinline muted></video>
+        <span class="live"><i></i>LIVE</span>
+        <div id="countdown"></div>
+        <div class="flash" id="flash"></div>
+      </div>
+    </div>
+    <div class="row">
+      <button class="btn ghost" id="retakeBtn">Foto ulang</button>
+      <select id="layoutSelect" aria-label="Jumlah foto">
+        <option value="2">2 foto</option><option value="3">3 foto</option>
+        <option value="4" selected>4 foto</option><option value="6">6 foto</option>
+      </select>
+      <button class="btn rec" id="startBtn">Mulai foto</button>
+      <button class="btn ghost" id="uploadBtn">Upload foto</button>
+      <button class="btn ghost" id="deleteBtn">Hapus semua</button>
+      <input type="file" id="fileInput" accept="image/*" multiple hidden>
+    </div>
+  </section>
+
+  <aside class="panel">
+    <h3>Hasil</h3>
+    <div class="mini-strip">
+      <h4>superSTRAK</h4>
+      <div id="photos"><p class="empty">Belum ada foto.</p></div>
+    </div>
+    <button class="btn" id="editBtn">Edit bingkai</button>
+  </aside>
+</main>
+<script src="js/main.js"></script>
+</body>
+</html>

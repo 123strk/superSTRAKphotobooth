@@ -1,0 +1,48 @@
+
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>superSTRAK Photobooth</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/frames.css">
+</head>
+<body>
+<main class="welcome">
+  <section class="hero">
+    <h1 class="logo"><i class="u"><span>sup</span></i><span>er</span>STRAK</h1>
+    <p class="sub">Photobooth di browser. Ambil foto atau unggah dari galeri, pilih bingkai dari 22 tema, tempel stiker, lalu unduh strip-mu.</p>
+    <div class="cta">
+      <button class="btn" onclick="location.href='welcome.html'"><i></i>Mulai sesi</button>
+      <span class="note">Tanpa akun. Fotomu tidak keluar dari perangkat.</span>
+    </div>
+    <ul class="feats">
+      <li><b>22</b><span>tema bingkai</span></li>
+      <li><b>30+</b><span>stiker vektor</span></li>
+      <li><b>2</b><span>susunan strip &amp; grid</span></li>
+    </ul>
+  </section>
+  <div class="collage" id="collage" aria-hidden="true"></div>
+</main>
+
+<script>
+const PH = "data:image/svg+xml," + encodeURIComponent(
+  "<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 4 3'><rect width='4' height='3' fill='#a9c4ee'/><circle cx='2' cy='1.25' r='.55' fill='#f2f6fd'/><path d='M.75 3c0-1 .55-1.35 1.25-1.35S3.25 2 3.25 3z' fill='#f2f6fd'/></svg>");
+const SHOW = [
+  ["rosso", "ROSSO CORSA", "RACE DAY"],
+  ["hero", "HERO", "IT STARTS HERE"],
+  ["chatb", "superSTRAK", "message"],
+  ["girly", "cutie ♡", "2026"]
+];
+document.getElementById("collage").innerHTML = SHOW.map((t, i) =>
+  `<div class="strip" data-theme="${t[0]}" style="--i:${i}">
+     <div class="head">${t[1]}</div>
+     <div class="photos"><img src="${PH}" alt=""><img src="${PH}" alt=""><img src="${PH}" alt=""></div>
+     <div class="foot">${t[2]}</div>
+     <div class="brand"><span>super</span>STRAK</div>
+   </div>`).join("");
+</script>
+</body>
+</html>

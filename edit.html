@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Edit bingkai | superSTRAK</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/frames.css">
+</head>
+<body class="edit-page">
+<header class="top">
+  <h1 class="logo"><i class="u"><span>sup</span></i><span>er</span>STRAK</h1>
+</header>
+
+<main class="editor">
+  <!-- kiri: tema dan susunan berdampingan -->
+  <aside class="side dock">
+    <div class="panel">
+      <h2>Tema bingkai</h2>
+      <div class="chips2" id="themeGrid"></div>
+    </div>
+    <div class="panel">
+      <h2>Susunan</h2>
+      <div class="cols">
+        <button class="chip active" data-cols="1">Strip</button>
+        <button class="chip" data-cols="2">Grid 2 kolom</button>
+      </div>
+      <p class="hint">Strip: 1 kolom ke bawah. Grid: 2 kolom ke samping.</p>
+    </div>
+  </aside>
+
+  <!-- tengah: preview -->
+  <section class="stage">
+    <div class="fitwrap" id="fitWrap">
+      <div class="fit" id="fit">
+        <div class="cap" id="cap">
+          <div class="strip" id="strip" data-theme="elegan">
+            <div class="head" id="head" contenteditable="true" spellcheck="false">superSTRAK</div>
+            <div class="photos" id="photos"></div>
+            <div class="foot" id="foot" contenteditable="true" spellcheck="false"></div>
+            <div class="brand"><span>super</span>STRAK</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <button class="btn ghost" id="backBtn">Kembali</button>
+      <button class="btn rec" id="downloadBtn">Unduh PNG</button>
+    </div>
+  </section>
+
+  <!-- kanan: warna di kiri, stiker di kanan -->
+  <aside class="side dock">
+    <div class="panel">
+      <h2>Warna bingkai</h2>
+      <div class="swatches" id="swatches"></div>
+      <p class="hint">Klik judul dan teks strip untuk mengganti tulisan.</p>
+    </div>
+    <div class="panel">
+      <h2>Stiker</h2>
+      <div class="stkgrid" id="stkGrid"></div>
+      <div class="tools">
+        <button id="tBig" aria-label="Perbesar">＋</button>
+        <button id="tSmall" aria-label="Perkecil">－</button>
+        <button id="tRot" aria-label="Putar">↻</button>
+        <button id="tDel" aria-label="Hapus">✕</button>
+      </div>
+      <p class="hint">Klik stiker, lalu geser ke wajah.</p>
+    </div>
+  </aside>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="js/stickers.js"></script>
+<script src="js/stickers2.js"></script>
+<script src="js/edit.js"></script>
+</body>
+</html>
