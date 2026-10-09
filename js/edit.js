@@ -12,7 +12,12 @@ function showErr(msg) {
 }
 window.addEventListener("error", (e) =>
   showErr(
-    e.message + " (" + (e.filename || "").split("/").pop() + ":" + e.lineno + ")",
+    e.message +
+      " (" +
+      (e.filename || "").split("/").pop() +
+      ":" +
+      e.lineno +
+      ")",
   ),
 );
 window.addEventListener("unhandledrejection", (e) =>
@@ -43,6 +48,15 @@ const today = new Date().toLocaleDateString("id-ID", {
 const isIOS =
   /iP(hone|ad|od)/.test(navigator.userAgent) ||
   (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+
+// ikon voice call + video call untuk header chat (dipasang sebagai gambar saat diunduh)
+const CHAT_ICON =
+  "data:image/svg+xml;charset=utf-8," +
+  encodeURIComponent(
+    '<svg xmlns="http://www.w3.org/2000/svg" width="92" height="36" viewBox="0 0 50 24" fill="none" stroke="#2f8cf0" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+      '<g transform="translate(-1 1) scale(.9)"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></g>' +
+      '<g transform="translate(27 0)"><rect x="0" y="5" width="15" height="14" rx="2"/><path d="M22 7l-6 4.5 6 4.5z"/></g></svg>',
+  );
 
 // n = nama tombol, h = judul, f = teks bawah, s = id stiker dekorasi (urutan sudut: kiri-atas, kanan-atas, kiri-bawah, kanan-bawah)
 const THEMES = {
@@ -386,6 +400,18 @@ function showSaveSheet(blob, filename, cw, ch) {
   });
 }
 
+// Ikon call tidak ditambahkan ulang agar tidak double
+function addChatIcon(root) {
+  if (!theme.startsWith("chat")) return;
+
+  const h = root.querySelector(".head");
+  if (!h) return;
+
+  // Jangan menambahkan ikon call/video call kedua kali.
+  // Fungsi tetap tersedia agar proses simpan tidak error.
+  h.classList.add("real-ico");
+}
+
 // kunci ukuran tiap foto dalam piksel supaya tidak gepeng
 function lockPhotoSizes(root, sizes) {
   root.querySelectorAll(".photos img").forEach((im, i) => {
@@ -662,3 +688,4 @@ $("tDel").addEventListener("click", () => {
     sel = null;
   }
 });
+
