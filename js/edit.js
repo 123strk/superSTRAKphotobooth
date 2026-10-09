@@ -333,9 +333,18 @@ $("backBtn").addEventListener("click", () => {
   document.head.appendChild(css);
 })();
 
-const canvasToBlob = (canvas) =>
-  new Promise((res) => canvas.toBlob(res, "image/png"));
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const nextFrame = () => new Promise((r) => requestAnimationFrame(() => r()));
+
+// canvas -> file PNG (dengan cadangan kalau toBlob mengembalikan kosong)
+async function toPngBlob(canvas) {
+  const b = await new Promise((r) => canvas.toBlob(r, "image/png"));
+  if (b) return b;
+  const bin = atob(canvas.toDataURL("image/png").split(",")[1]);
+  const arr = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+  return new Blob([arr], { type: "image/png" });
+}
 
 function showSaveSheet(blob, filename, cw, ch) {
   const url = URL.createObjectURL(blob);
@@ -386,8 +395,66 @@ function showSaveSheet(blob, filename, cw, ch) {
   });
 }
 
-// salinan strip berukuran asli (tanpa transform & tata letak editor), khusus untuk dipotret
-function buildExport() {
+// header chat: ikon call dipasang sebagai gambar biasa supaya pasti ikut tersimpan
+function addChatIcon(root) {
+  if (!theme.startsWith("chat")) return;
+  const h = root.querySelector(".head");
+  if (!h || h.querySelector("img.chat-ico")) return;
+  h.classList.add("real-ico");
+  const im = root.ownerDocument.createElement("img");
+  im.className = "chat-ico";
+  im.src = CHAT_ICON;
+  im.width = 46;
+  im.height = 18;
+  im.style.cssText = "display:block;flex:none;width:46px;height:18px";
+  h.appendChild(im);
+}
+
+// kunci ukuran tiap foto dalam piksel supaya tidak gepeng
+function lockPhotoSizes(root, sizes) {
+  root.querySelectorAll(".photos img").forEach((im, i) => {
+    if (!sizes[i]) return;
+    im.style.width = sizes[i][0] + "px";
+    im.style.height = sizes[i][1] + "px";
+    im.style.aspectRatio = "auto";
+  });
+}
+
+/* Cara 1 ("live"): strip di editor dikembalikan ke ukuran asli (tertutup layar
+   "Menyiapkan gambar..."), difoto, lalu dikecilkan lagi. */
+async function renderLive(sc) {
+  cap.style.transform = "none";
+  fit.style.width = fit.style.height = "";
+  await nextFrame();
+  await sleep(80);
+  const sizes = [...photosDiv.querySelectorAll("img")].map((im) => [
+    im.offsetWidth,
+    im.offsetHeight,
+  ]);
+  try {
+    return await html2canvas(cap, {
+      scale: sc,
+      useCORS: true,
+      backgroundColor: null,
+      logging: false,
+      scrollX: 0,
+      scrollY: 0,
+      onclone: (doc) => {
+        doc.body.classList.remove("edit-page");
+        doc.getElementById("cap").style.transform = "none";
+        const f = doc.getElementById("fit");
+        f.style.width = f.style.height = "";
+        lockPhotoSizes(doc.getElementById("strip"), sizes);
+        addChatIcon(doc.getElementById("strip"));
+      },
+    });
+  } finally {
+    fitStrip();
+  }
+}
+
+/* Cara 2 ("copy"): salinan strip berukuran asli di pojok halaman, lalu difoto. */
+async function renderCopy(sc) {
   const box = document.createElement("div");
   box.className = "cap";
   box.style.cssText =
@@ -400,29 +467,33 @@ function buildExport() {
     e.removeAttribute("contenteditable"),
   );
   box.appendChild(c);
-
-  // header chat: ikon call dipasang sebagai gambar biasa supaya pasti ikut tersimpan
-  if (theme.startsWith("chat")) {
-    const h = c.querySelector(".head");
-    h.classList.add("real-ico");
-    const im = document.createElement("img");
-    im.src = CHAT_ICON;
-    im.width = 46;
-    im.height = 18;
-    im.style.cssText = "display:block;flex:none;width:46px;height:18px";
-    h.appendChild(im);
-  }
+  addChatIcon(c);
   document.body.appendChild(box);
-
-  // kunci ukuran foto dalam piksel supaya tidak gepeng
-  c.querySelectorAll(".photos img").forEach((im) => {
-    const w = im.offsetWidth,
-      h = im.offsetHeight;
-    im.style.width = w + "px";
-    im.style.height = h + "px";
-    im.style.aspectRatio = "auto";
-  });
-  return box;
+  try {
+    await nextFrame();
+    await sleep(80);
+    const sizes = [...c.querySelectorAll(".photos img")].map((im) => [
+      im.offsetWidth,
+      im.offsetHeight,
+    ]);
+    lockPhotoSizes(c, sizes);
+    return await html2canvas(box, {
+      scale: sc,
+      useCORS: true,
+      backgroundColor: null,
+      logging: false,
+      scrollX: 0,
+      scrollY: 0,
+      onclone: (doc) => {
+        doc.body.classList.remove("edit-page");
+        doc.body.style.overflow = "visible";
+        doc.body.style.height = "auto";
+        doc.documentElement.style.overflow = "visible";
+      },
+    });
+  } finally {
+    box.remove();
+  }
 }
 
 $("downloadBtn").addEventListener("click", async () => {
@@ -433,41 +504,41 @@ $("downloadBtn").addEventListener("click", async () => {
   btn.textContent = "Menyiapkan...";
   window.scrollTo(0, 0);
 
-  // penutup layar: pengguna tidak melihat salinan yang sedang dipotret
+  // penutup layar: pengguna tidak melihat proses pemotretan
   const cover = document.createElement("div");
   cover.style.cssText =
     "position:fixed;left:0;top:0;width:100%;height:100%;z-index:998;background:#0a1b33;color:#fff;display:grid;place-items:center;font:600 15px sans-serif";
   cover.textContent = "Menyiapkan gambar...";
   document.body.appendChild(cover);
 
-  let box = null;
+  const errs = [];
   try {
     if (document.fonts && document.fonts.ready) await document.fonts.ready;
-    box = buildExport();
-    await sleep(150); // beri waktu gambar & tata letak selesai
 
-    // iPhone: skala 2 lalu 1 (hemat memori). Lainnya: skala 3 lalu 2.
-    let canvas = null,
-      lastErr = null;
-    for (const sc of isIOS ? [2, 1] : [3, 2]) {
+    // coba 4 cara berurutan sampai ada yang berhasil
+    const scales = isIOS ? [2, 1] : [3, 2];
+    const attempts = [];
+    scales.forEach((sc) => {
+      attempts.push(["live", sc]);
+      attempts.push(["copy", sc]);
+    });
+
+    let canvas = null;
+    for (const [mode, sc] of attempts) {
       try {
-        canvas = await html2canvas(box, {
-          scale: sc,
-          useCORS: true,
-          backgroundColor: null,
-          logging: false,
-          scrollX: 0,
-          scrollY: 0,
-        });
-        break;
+        const c = mode === "live" ? await renderLive(sc) : await renderCopy(sc);
+        if (c && c.width > 0 && c.height > 0) {
+          canvas = c;
+          break;
+        }
+        errs.push(mode + "@" + sc + ": gambar kosong");
       } catch (e) {
-        lastErr = e;
+        errs.push(mode + "@" + sc + ": " + ((e && e.message) || e));
       }
     }
-    if (!canvas) throw lastErr || new Error("Gagal membuat gambar");
+    if (!canvas) throw new Error(errs.join(" | ") || "Gagal membuat gambar");
 
-    const blob = await canvasToBlob(canvas);
-    if (!blob) throw new Error("Gagal membuat file gambar");
+    const blob = await toPngBlob(canvas);
     const name = "superSTRAK-" + theme + ".png";
 
     cover.remove();
@@ -485,11 +556,13 @@ $("downloadBtn").addEventListener("click", async () => {
     }
   } catch (err) {
     console.error(err);
-    showErr(err.message || String(err));
-    alert("Gagal membuat gambar. Coba lagi, atau kurangi jumlah stiker.");
-  } finally {
-    if (box) box.remove();
     cover.remove();
+    const msg = (err && err.message) || String(err);
+    showErr(msg);
+    alert("Gagal membuat gambar.\n\nDetail: " + msg);
+  } finally {
+    cover.remove();
+    fitStrip();
     btn.disabled = false;
     btn.textContent = label;
   }
