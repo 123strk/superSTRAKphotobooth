@@ -34,123 +34,28 @@ const CHAT_ICON =
 
 // n = nama tombol, h = judul, f = teks bawah, s = id stiker dekorasi (urutan sudut: kiri-atas, kanan-atas, kiri-bawah, kanan-bawah)
 const THEMES = {
-  elegan: {
-    n: "Elegan",
-    h: "superSTRAK",
-    f: today,
-    s: ["sparkle", "star", "sparkle", "star"],
-  },
-  hero: {
-    n: "Hero Web",
-    h: "HERO",
-    f: "IT STARTS HERE",
-    s: ["web", "burst", "mask", "bolt"],
-  },
-  multi: {
-    n: "Multiverse",
-    h: "MULTIVERSE",
-    f: "EVERY MOMENT MATTERS",
-    s: ["burst", "bolt", "sparkle", "star"],
-  },
-  armor: {
-    n: "Armor Gold",
-    h: "ARMOR UP",
-    f: today,
-    s: ["arc", "bolt", "star", "arc"],
-  },
-  comic: {
-    n: "Komik hero",
-    h: "POW!",
-    f: "ISSUE #1 • " + today,
-    s: ["burst", "bolt", "star", "burst"],
-  },
-  manga: {
-    n: "Manga",
-    h: "BAM!",
-    f: "CHAPTER 1 • " + today,
-    s: ["burst", "sparkle", "bolt", "star"],
-  },
-  popart: {
-    n: "Pop art",
-    h: "WOW!",
-    f: today,
-    s: ["burst", "star", "heart", "bolt"],
-  },
-  girly: {
-    n: "Girly",
-    h: "cutie ♡",
-    f: today,
-    s: ["bow", "flower", "heart", "sparkle"],
-  },
-  cat: {
-    n: "Kucing",
-    h: "meow ♡",
-    f: "purr-fect • " + today,
-    s: ["cat", "paw", "heart", "star"],
-  },
+  elegan: { n: "Elegan", h: "superSTRAK", f: today, s: ["sparkle", "star", "sparkle", "star"] },
+  hero: { n: "Hero Web", h: "HERO", f: "IT STARTS HERE", s: ["web", "burst", "mask", "bolt"] },
+  multi: { n: "Multiverse", h: "MULTIVERSE", f: "EVERY MOMENT MATTERS", s: ["burst", "bolt", "sparkle", "star"] },
+  armor: { n: "Armor Gold", h: "ARMOR UP", f: today, s: ["arc", "bolt", "star", "arc"] },
+  comic: { n: "Komik hero", h: "POW!", f: "ISSUE #1 • " + today, s: ["burst", "bolt", "star", "burst"] },
+  manga: { n: "Manga", h: "BAM!", f: "CHAPTER 1 • " + today, s: ["burst", "sparkle", "bolt", "star"] },
+  popart: { n: "Pop art", h: "WOW!", f: today, s: ["burst", "star", "heart", "bolt"] },
+  girly: { n: "Girly", h: "cutie ♡", f: today, s: ["bow", "flower", "heart", "sparkle"] },
+  cat: { n: "Kucing", h: "meow ♡", f: "purr-fect • " + today, s: ["cat", "paw", "heart", "star"] },
   chatb: { n: "Chat Biru", h: "superSTRAK", f: "message", s: [] },
   chatg: { n: "Chat Abu", h: "superSTRAK", f: "message", s: [] },
-  blob: {
-    n: "Blob",
-    h: "Captured",
-    f: "in a soft moment • " + today,
-    s: ["sparkle", "heart", "sparkle", "bow"],
-  },
-  checker: {
-    n: "Checker",
-    h: "good vibes",
-    f: today,
-    s: ["smile", "flower", "smile", "sparkle"],
-  },
-  denim: {
-    n: "Denim",
-    h: "denim days",
-    f: today,
-    s: ["star", "flower", "heart", "star"],
-  },
-  tiket: {
-    n: "Tiket",
-    h: "BOARDING PASS",
-    f: "JKT → TYO • " + today,
-    s: ["plane", "sparkle", "plane", "star"],
-  },
-  perangko: {
-    n: "Perangko",
-    h: "Series 1.0",
-    f: "Happy Anniversary! • " + today,
-    s: ["heart", "sparkle", "heart", "sparkle"],
-  },
-  retro: {
-    n: "Retro",
-    h: "untitled - superSTRAK",
-    f: "For Help, press F1 • " + today,
-    s: [],
-  },
-  rosso: {
-    n: "F1 Rosso",
-    h: "ROSSO CORSA",
-    f: "RACE DAY • " + today,
-    s: ["f1red", "flag", "trophy", "f1red"],
-  },
-  silver: {
-    n: "F1 Silver",
-    h: "SILVER ARROW",
-    f: "GRID 01 • " + today,
-    s: ["f1silver", "flag", "trophy", "f1silver"],
-  },
-  kart: {
-    n: "Go-Kart",
-    h: "GO-KART",
-    f: "LAP 01 • " + today,
-    s: ["kart", "flag", "trophy", "kart"],
-  },
+  blob: { n: "Blob", h: "Captured", f: "in a soft moment • " + today, s: ["sparkle", "heart", "sparkle", "bow"] },
+  checker: { n: "Checker", h: "good vibes", f: today, s: ["smile", "flower", "smile", "sparkle"] },
+  denim: { n: "Denim", h: "denim days", f: today, s: ["star", "flower", "heart", "star"] },
+  tiket: { n: "Tiket", h: "BOARDING PASS", f: "JKT → TYO • " + today, s: ["plane", "sparkle", "plane", "star"] },
+  perangko: { n: "Perangko", h: "Series 1.0", f: "Happy Anniversary! • " + today, s: ["heart", "sparkle", "heart", "sparkle"] },
+  retro: { n: "Retro", h: "untitled - superSTRAK", f: "For Help, press F1 • " + today, s: [] },
+  rosso: { n: "F1 Rosso", h: "ROSSO CORSA", f: "RACE DAY • " + today, s: ["f1red", "flag", "trophy", "f1red"] },
+  silver: { n: "F1 Silver", h: "SILVER ARROW", f: "GRID 01 • " + today, s: ["f1silver", "flag", "trophy", "f1silver"] },
+  kart: { n: "Go-Kart", h: "GO-KART", f: "LAP 01 • " + today, s: ["kart", "flag", "trophy", "kart"] },
   film: { n: "Film 35mm", h: "35MM", f: "FRAME 12A • " + today, s: [] },
-  vintage: {
-    n: "Vintage",
-    h: "Memories",
-    f: today,
-    s: ["flower", "sparkle", "rose", "sparkle"],
-  },
+  vintage: { n: "Vintage", h: "Memories", f: today, s: ["flower", "sparkle", "rose", "sparkle"] },
 };
 // posisi stiker dekorasi: empat sudut, SELALU di dalam bingkai (px dari tepi)
 const SPOTS = [
@@ -160,18 +65,8 @@ const SPOTS = [
   { r: 4, b: 4 },
 ];
 const COLORS = [
-  "#0f2547",
-  "#1f4fd8",
-  "#dce8fb",
-  "#e0243a",
-  "#111111",
-  "#ffffff",
-  "#ffd1e3",
-  "#e8d5ff",
-  "#ffd93b",
-  "#c8f7c5",
-  "#ffcba4",
-  "#a8c5b5",
+  "#0f2547", "#1f4fd8", "#dce8fb", "#e0243a", "#111111", "#ffffff",
+  "#ffd1e3", "#e8d5ff", "#ffd93b", "#c8f7c5", "#ffcba4", "#a8c5b5",
 ];
 
 let theme = "elegan",
@@ -278,8 +173,9 @@ $("backBtn").addEventListener("click", () => {
 (function () {
   const css = document.createElement("style");
   css.textContent =
-    ".sheet{position:fixed;inset:0;z-index:999;background:rgba(10,27,51,.9);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;overflow:auto}" +
-    ".sheet img{max-width:100%;max-height:66vh;object-fit:contain;border-radius:6px;background:#fff;-webkit-touch-callout:default;-webkit-user-select:auto;user-select:auto}" +
+    ".sheet{position:fixed;inset:0;z-index:999;background:rgba(10,27,51,.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:16px;overflow:auto}" +
+    // flex:none + width/height auto = proporsi asli, tidak bisa gepeng
+    ".sheet img{flex:none;display:block;width:auto;height:auto;max-width:100%;max-height:66vh;border-radius:6px;background:#fff;-webkit-touch-callout:default;-webkit-user-select:auto;user-select:auto}" +
     ".sheet p{color:#dce8fb;font-size:13px;text-align:center;max-width:34ch;line-height:1.55}" +
     ".sheet .acts{display:flex;gap:10px;flex-wrap:wrap;justify-content:center}";
   document.head.appendChild(css);
@@ -327,18 +223,38 @@ $("downloadBtn").addEventListener("click", async () => {
     label = btn.textContent;
   btn.disabled = true;
   btn.textContent = "Menyiapkan...";
+
+  // ukuran piksel asli tiap foto di layar (tidak terpengaruh scale preview)
+  const sizes = [...photosDiv.querySelectorAll("img")].map((im) => [
+    im.offsetWidth,
+    im.offsetHeight,
+  ]);
+
   try {
     const canvas = await html2canvas(cap, {
       scale: isIOS ? 2 : 3, // iPhone lama terbatas memori
       useCORS: true,
       backgroundColor: null,
       logging: false,
-      // di salinan untuk diunduh, ukuran dikembalikan penuh
+      // render salinan seolah di layar lebar, supaya tata letak versi HP tidak ikut
+      windowWidth: 1400,
+      windowHeight: 900,
+      scrollX: 0,
+      scrollY: 0,
       onclone: (doc) => {
         doc.body.classList.remove("edit-page");
         doc.getElementById("cap").style.transform = "none";
         const f = doc.getElementById("fit");
         f.style.width = f.style.height = "";
+
+        // kunci ukuran tiap foto supaya tidak bergantung pada aspect-ratio
+        doc.querySelectorAll("#photos img").forEach((im, i) => {
+          if (!sizes[i]) return;
+          im.style.width = sizes[i][0] + "px";
+          im.style.height = sizes[i][1] + "px";
+          im.style.aspectRatio = "auto";
+          im.style.objectFit = "cover";
+        });
 
         // header chat: ikon call dipasang sebagai gambar biasa supaya pasti ikut tersimpan
         if (theme.startsWith("chat")) {
